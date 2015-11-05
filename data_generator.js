@@ -18,6 +18,9 @@ var addTweet = function(newTweet){
   var username = newTweet.user;
   streams.users[username].push(newTweet);
   streams.home.push(newTweet);
+  if (typeof loadTweets == 'function'){
+    loadTweets();
+  }
 };
 
 // utility function
