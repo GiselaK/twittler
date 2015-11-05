@@ -45,7 +45,9 @@ var generateRandomTweet = function(){
   var tweet = {};
   tweet.user = randomElement(users);
   tweet.message = randomMessage();
-  tweet.created_at = new Date();
+  var hours = new Date().getHours() < 13 ? new Date().getHours(): new Date().getHours() - 12;
+  var minutes = new Date().getMinutes() > 9 ? new Date().getMinutes(): "0" + new Date().getMinutes();
+  tweet.created_at = hours +":"+ minutes;
   addTweet(tweet);
 };
 
