@@ -1,29 +1,43 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <script src="jquery.js"></script>
-    <script src="data_generator.js"></script>
-  </head>
-  <body>
-    <script>
-    function loadTweets () {
-        var $body = $('body');
-        $body.html('');
+<head>
+  <script src="jquery.js"></script>
+  <script src="data_generator.js"></script>
+</head>
+<body>
+  <script>
+  function timeline (p) {
+    var currentStream = streams.users[p];
+    loadTweets(currentStream);
+  }
+  function loadTweets (currentStream) {
+    // console.log(currentStream);
+    var $body = $('body');
+    $body.html('');
+    cs = currentStream !== undefined ? currentStream: cs;
+    var index = cs.length - 1;
+    while(index >= 0){
+      var tweet = cs[index];
+      var $tweet = $('<div></div>');
+      $tweet.html('@' + '<button class="user '+tweet.user+ '"'+' id="'+tweet.user+Math.random()*1000+tweet.created_at+'">' + tweet.user +'</button>'+': ' + tweet.message + " " + tweet.created_at);
+      $tweet.appendTo($body);
+      index -= 1;
+    }
 
-        var index = streams.home.length - 1;
-        while(index >= 0){
-          var tweet = streams.home[index];
-          var $tweet = $('<div></div>');
-          $tweet.text('@' + tweet.user + ': ' + tweet.message + " " + tweet.created_at);
-          $tweet.appendTo($body);
-          index -= 1;
-        }
+  }
 
-      }
-    
-      $(document).ready(loadTweets());
-
+  $(document).ready(function (){
+    loadTweets(streams.home);
+  
+  });
+  $(document).on('click', ".user", function() {
+    timeline(this.classList[1]);       
+  });
+  setInterval(function(){
+    loadTweets(cs);
+  }, 300)
+    //set interval tomoro
 
     </script>
   </body>
-</html>
+  </html>
